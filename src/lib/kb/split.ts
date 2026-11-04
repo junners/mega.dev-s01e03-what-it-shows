@@ -6,11 +6,12 @@ import { causeOf, uniqueById, type Report, type Tenant } from '#lib/kb/causes';
 
 export type Problem = 'parser' | 'hint' | 'one-day' | 'unplaced';
 
-export const PROBLEMS: Record<Problem, { title: string; issue: number | null }> = {
-  parser: { title: 'Shared parser reads day-first dates month first', issue: 1 },
-  hint: { title: 'booking-v3 form hints MM/DD/YYYY to day-first tenants', issue: 2 },
-  'one-day': { title: 'Invite lands one day off, by recipient time zone', issue: 3 },
-  unplaced: { title: 'No tenant on file', issue: null },
+// Where each problem stands. Engineering closed #4471 on 5 October 2026.
+export const PROBLEMS: Record<Problem, { title: string; issue: number | null; state: string; why: string }> = {
+  parser: { title: 'Shared parser reads day-first dates month first', issue: 1, state: 'fixed', why: 'fix(dates): parse dd/mm for eu locales' },
+  hint: { title: 'booking-v3 form hints MM/DD/YYYY to day-first tenants', issue: 2, state: "won't fix", why: 'booking-v3 form retired' },
+  'one-day': { title: 'Invite lands one day off, by recipient time zone', issue: 3, state: 'open', why: 'not in the engineering update' },
+  unplaced: { title: 'No tenant on file', issue: null, state: 'open', why: '' },
 };
 
 export function problemOf(r: Report, t: Tenant | undefined): Problem {

@@ -23,7 +23,7 @@
 
 <table>
   <thead>
-    <tr><th>problem</th><th>reports</th><th>tenants</th><th>came in by</th><th>intake tagged</th><th>seen</th><th>ticket</th></tr>
+    <tr><th>problem</th><th>reports</th><th>tenants</th><th>came in by</th><th>intake tagged</th><th>seen</th><th>ticket</th><th>state</th></tr>
   </thead>
   <tbody>
     {#each split.groups as g (g.problem)}
@@ -36,6 +36,7 @@
         <td class="small">{list(g.taggedAs)}</td>
         <td class="small">{g.firstSeen} → {g.lastSeen}</td>
         <td>{#if p.issue}<a href="https://github.com/{repo}/issues/{p.issue}">#{p.issue}</a>{:else}none{/if}</td>
+        <td title={p.why}><span class="state">{p.state}</span>{#if p.why}<br /><span class="small">{p.why}</span>{/if}</td>
       </tr>
     {/each}
   </tbody>
@@ -52,4 +53,5 @@
 <style>
   .sum { font-size: 1.1rem; }
   .small { color: var(--muted); font-size: 0.85em; }
+  .state { font-weight: 600; }
 </style>

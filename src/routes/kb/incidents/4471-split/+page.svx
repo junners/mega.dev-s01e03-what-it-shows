@@ -21,28 +21,32 @@ desk's own cause table counts them.
 <SplitTable ticket={4471} repo="junners/mega.dev-s01e03-what-it-shows" />
 
 <Callout kind="warn">
-The queued parser fix closes the first problem only. The other two keep coming in after it ships.
+Engineering closed #4471 on 5 October: the parser is fixed ("parse dd/mm for eu locales"), and the
+booking-v3 hint is won't fix because the booking-v3 form is retired. The one-day moves are in
+neither: that ticket stays open.
 </Callout>
 
 ## 1 · The parser reads day-first dates month first
 
 Every tenant here writes the day first. The shared parser reads month first, so day and month
-swap: "7 April went out on 4 July". This is the bug #4471 names, and the fix that is queued.
+swap: "7 April went out on 4 July". This is the bug #4471 names. **Fixed** on 5 October:
+`fix(dates): parse dd/mm for eu locales`.
 
 ## 2 · booking-v3 shows a month-first hint
 
 booking-v3 prints `MM/DD/YYYY` under its date field. People do what the hint says and type the month
 first, then the form reads the date the tenant's way, day first. The swap looks the same as
 problem 1, so the subject lines match and decision 0001 merged it. It only comes in through the
-form, only for the booking-v3 tenants. The parser fix does not touch it: the form needs a
-day-first hint for day-first tenants.
+form, only for the booking-v3 tenants. The parser fix does not touch it. **Won't fix**: the
+booking-v3 form is retired, so the wrong hint goes with it.
 
 ## 3 · Invites one day off
 
 These dates do not swap: they move by one day. "Client in Lisbon got Tuesday. Client in Toronto
 got Monday." The desk read these as one-day moves (desk notes) but filed them under the parser by
 tenant. They stay counted there, as the desk counts them, and they have a ticket of their own. A
-one-day move with the right day and month points at time zones, not date order.
+one-day move with the right day and month points at time zones, not date order. **Open**: the
+engineering update that closed #4471 does not cover it, and neither fix changes it.
 
 ## Why one ticket hid three
 
