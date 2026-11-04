@@ -15,7 +15,8 @@ signature: 'v1.eyJzdWIiOiI2MjgxIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpY
 
 [#4471](/kb/incidents/4471) says one bug: the parser reads dates month first. Read the reports
 by tenant, form and what the reporter describes, and #4471 holds three problems. Each now has a
-ticket of its own. The counts below are computed from the export at render time.
+ticket of its own. The counts below are computed from the export at render time, the way the
+desk's own cause table counts them.
 
 <SplitTable ticket={4471} repo="junners/mega.dev-s01e03-what-it-shows" />
 
@@ -40,7 +41,8 @@ day-first hint for day-first tenants.
 
 These dates do not swap: they move by one day. "Client in Lisbon got Tuesday. Client in Toronto
 got Monday." The desk read these as one-day moves (desk notes) but filed them under the parser by
-tenant. A one-day move with the right day and month points at time zones, not date order.
+tenant. They stay counted there, as the desk counts them, and they have a ticket of their own. A
+one-day move with the right day and month points at time zones, not date order.
 
 ## Why one ticket hid three
 

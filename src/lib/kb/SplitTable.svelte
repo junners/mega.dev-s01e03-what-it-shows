@@ -41,6 +41,10 @@
   </tbody>
 </table>
 
+{#if split.alsoFiled}
+  <p class="small">The {split.alsoFiled} one-day moves are counted where the desk filed them, under <code>parser</code> by tenant, and again in their own row. That is why the rows add up to more than {split.merged.length}.</p>
+{/if}
+
 {#each split.groups.filter((g) => g.tenants.length <= 5) as g (g.problem)}
   <p class="small"><code>{g.problem}</code> tenants: {g.tenants.join(', ')} · reports: {g.reports.length <= 5 ? g.reports.map((r) => r.id).join(', ') : `${g.reports.length}`}</p>
 {/each}

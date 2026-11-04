@@ -1,6 +1,7 @@
-// What #4471 really holds. causes.ts knows two causes and footnotes the one-day moves under
-// whichever cause their tenant would get. A one-day move is not a flipped date: it is its own
-// problem, so here it is counted as its own problem. Everything else is causes.ts unchanged.
+// What #4471 really holds. Counts follow the desk's own view (causes.ts, as CauseTable shows it):
+// every report is counted under the cause it is filed under. The one-day moves (desk-notes.json)
+// stay counted where they are filed, and they also get a row of their own, because a one-day move
+// is not a flipped date: it is its own problem with its own ticket.
 import { causeOf, uniqueById, type Report, type Tenant } from '#lib/kb/causes';
 
 export type Problem = 'parser' | 'hint' | 'one-day' | 'unplaced';
@@ -12,8 +13,7 @@ export const PROBLEMS: Record<Problem, { title: string; issue: number | null }> 
   unplaced: { title: 'No tenant on file', issue: null },
 };
 
-export function problemOf(r: Report, t: Tenant | undefined, oneDayMove: readonly string[]): Problem {
-  if (oneDayMove.includes(r.id)) return 'one-day';
+export function problemOf(r: Report, t: Tenant | undefined): Problem {
   return causeOf(r, t) ?? 'unplaced';
 }
 
@@ -34,13 +34,15 @@ export function splitTicket(
   ticket: number,
   tenantOf: (r: Report) => Tenant | undefined,
   oneDayMove: readonly string[],
-): { rows: number; merged: Report[]; groups: ProblemGroup[] } {
+): { rows: number; merged: Report[]; groups: ProblemGroup[]; alsoFiled: number } {
   const merged = uniqueById(all).filter((r) => r.mergedInto === ticket);
   const by = new Map<Problem, Report[]>();
   for (const r of merged) {
-    const p = problemOf(r, tenantOf(r), oneDayMove);
+    const p = problemOf(r, tenantOf(r));
     by.set(p, [...(by.get(p) ?? []), r]);
   }
+  const moved = merged.filter((r) => oneDayMove.includes(r.id));
+  if (moved.length) by.set('one-day', moved);
   const groups = [...by.entries()]
     .map(([problem, rs]) => {
       const days = rs.map((r) => r.receivedAt.slice(0, 10)).sort();
@@ -55,5 +57,6 @@ export function splitTicket(
       };
     })
     .sort((a, b) => b.reports.length - a.reports.length);
-  return { rows: all.filter((r) => r.mergedInto === ticket).length, merged, groups };
+  const alsoFiled = merged.filter((r) => oneDayMove.includes(r.id)).length;
+  return { rows: all.filter((r) => r.mergedInto === ticket).length, merged, groups, alsoFiled };
 }
