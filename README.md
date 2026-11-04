@@ -34,3 +34,10 @@ Support desk. Decision records: whoever signed them.
 ---
 
 Exported 2026-10-04 from the `support` repo, `apps/kb/` → `src/`.
+
+## #4471 split (added 2026-11-03)
+
+- Page: `src/routes/kb/incidents/4471-split/+page.svx`, counts from `src/lib/kb/split.ts` via `SplitTable.svelte`.
+- As the desk sees it: `rendered/kb/incidents/4471-split.html` (with `rendered/_app/`), or the one-file copy `rendered/4471-split.standalone.html`.
+- Tickets: [#1](../../issues/1) parser (374) · [#2](../../issues/2) booking-v3 hint (33) · [#3](../../issues/3) one day off (5).
+- `render/` holds the SvelteKit + mdsvex config used to build `rendered/`.
